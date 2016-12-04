@@ -7,5 +7,62 @@
   },
   "editorTab": {
     "currentEditorMode": 0
+  },
+  "iot-tab": {
+    "fileStatus": {
+      "README.md": {
+        "previousModTime": 1480835098000,
+        "modified": 1480835098000,
+        "seen": true,
+        "name": "README.md"
+      },
+      "icon.png": {
+        "previousModTime": 1480834836000,
+        "modified": 1480834836000,
+        "seen": true,
+        "name": "icon.png"
+      },
+      "main.js": {
+        "previousModTime": 1480873259000,
+        "modified": 1480873259000,
+        "seen": true,
+        "name": "main.js"
+      },
+      "package.json": {
+        "previousModTime": 1480834836000,
+        "modified": 1480834836000,
+        "seen": true,
+        "name": "package.json"
+      },
+      "smile_recycle.xdk": {
+        "previousModTime": 1480834841000,
+        "modified": 1480834841000,
+        "seen": true,
+        "name": "smile_recycle.xdk"
+      },
+      "smile_recycle.xdke": {
+        "previousModTime": 1480873243000,
+        "modified": 1480873243000,
+        "seen": true,
+        "name": "smile_recycle.xdke"
+      },
+      "tone.js": {
+        "previousModTime": 1480835950000,
+        "modified": 1480835950000,
+        "seen": true,
+        "name": "tone.js"
+      },
+      "xdk/project-info.json": {
+        "previousModTime": 1480834840000,
+        "modified": 1480834840000,
+        "seen": true,
+        "name": "xdk/project-info.json"
+      }
+    },
+    "boardFileStatus": {
+      "main.js": {
+        "previousModTime": 1480873262246
+      }
+    }
   }
 }

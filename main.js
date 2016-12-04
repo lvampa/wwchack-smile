@@ -4,12 +4,24 @@ const digitalAccelerometer = require('jsupm_mma7660');
 const upmBuzzer            = require("jsupm_buzzer");// Initialize on GPIO 5
 const myBuzzer             = new upmBuzzer.Buzzer(5);
 const http                 = require('http');
+const mraa                 = require ('mraa');
+const LCD                  = require ('jsupm_i2clcd');
+const myLCD                = new LCD.Jhd1313m1(6, 0x3E, 0x62);
+
 
 
 // Instantiate an MMA7660 on I2C bus 0
 const myDigitalAccelerometer = new digitalAccelerometer.MMA7660(
 					digitalAccelerometer.MMA7660_I2C_BUS,
 					digitalAccelerometer.MMA7660_DEFAULT_I2C_ADDR);
+
+
+myLCD.setColor(118,238,0)
+myLCD.write("sup")
+myLCD.clear();
+
+
+
 
 // place device in standby mode so we can write registers
 myDigitalAccelerometer.setModeStandby();
@@ -186,7 +198,7 @@ function melody()
 // When exiting: clear interval and print message
 process.on('SIGINT', function()
 {
-	clearInterval(myInterval);
+	
 
 	// clean up memory
 	digitalAccelerometer.delete_intp(x);
@@ -198,6 +210,8 @@ process.on('SIGINT', function()
 	digitalAccelerometer.delete_floatp(az);
 
 	myDigitalAccelerometer.setModeStandby();
+    
+    myLCD.clear();
     
     myBuzzer.stopSound();
 	console.log("Exiting...");

@@ -1,8 +1,10 @@
 'use strict';
 
 const digitalAccelerometer = require('jsupm_mma7660');
-const upmBuzzer = require("jsupm_buzzer");// Initialize on GPIO 5
-const myBuzzer = new upmBuzzer.Buzzer(5);
+const upmBuzzer            = require("jsupm_buzzer");// Initialize on GPIO 5
+const myBuzzer             = new upmBuzzer.Buzzer(5);
+const http                 = require('http');
+
 
 // Instantiate an MMA7660 on I2C bus 0
 const myDigitalAccelerometer = new digitalAccelerometer.MMA7660(
@@ -82,8 +84,7 @@ const diff = 2;
 //}, 250);
 
 
-function checkTilt()
-{
+(function checkTilt() {
 	myDigitalAccelerometer.getRawValues(x, y, z);
     var changed = false;
 
@@ -118,15 +119,36 @@ function checkTilt()
     prev[x] = current[x];
 
     if (changed) {
-        console.log("Send request")
+        smiley();
         melody();
+        setTimeout(function() {
+            frown();
+            checkTilt();
+        }, 5000);    
+        
+    } else {
+        setTimeout(function() {
+            checkTilt();
+        }, 250);    
     }
     
-    checkTilt();
+})();
+
+function smiley() {
+    http.get("http://10.232.205.239/on", function(response) {
+        // do nothing
+    })
+}
+
+function frown() {
+    http.get("http://10.232.205.239/off", function(response) {
+        // do nothing
+    })
 }
 
 
-myBuzzer.setVolume(0.2);
+myBuzzer.setVolume(0.01);
+
 var chords = [];
 chords.push(upmBuzzer.MI);
 chords.push(upmBuzzer.RE);
@@ -137,7 +159,8 @@ chords.push(upmBuzzer.SI);
 chords.push(upmBuzzer.RE);
 chords.push(upmBuzzer.LA);
 
-//chords here
+
+// chords here to make a melody!
 //chords.push(upmBuzzer.DO);
 //chords.push(upmBuzzer.RE);
 //chords.push(upmBuzzer.MI);
@@ -147,23 +170,17 @@ chords.push(upmBuzzer.LA);
 //chords.push(upmBuzzer.SI);
 //chords.push(upmBuzzer.DO);
 //chords.push(upmBuzzer.SI);
-var chordIndex = 0;
+
 
 function melody()
 {
-    if (chords.length != 0)
-    {
-        //Play sound for one second
-        console.log( myBuzzer.playSound(chords[chordIndex], 100000) );
-        chordIndex++;
-//        Reset the sound to start from the beginning.
-        if (chordIndex > chords.length - 1)
-			chordIndex = 0;
-    }
+    for (const chord of chords) {
+        console.log( myBuzzer.playSound(chord, 400000) );
+    };
+    
     myBuzzer.stopSound();
-    return true;
 }
-setInterval(melody, 100);
+//setInterval(melody, 100);
 
 
 // When exiting: clear interval and print message

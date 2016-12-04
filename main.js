@@ -16,12 +16,16 @@ const myDigitalAccelerometer = new digitalAccelerometer.MMA7660(
 					digitalAccelerometer.MMA7660_DEFAULT_I2C_ADDR);
 
 
-myLCD.setColor(118,238,0)
-myLCD.write("sup")
-myLCD.clear();
 
+function setRecycleMessage() {
+    myLCD.clear();
+    myLCD.setColor(118,238,0);
+    myLCD.write("Please");
+    myLCD.setCursor(1,1);
+    myLCD.write("Recycle");
+}
 
-
+setRecycleMessage();
 
 // place device in standby mode so we can write registers
 myDigitalAccelerometer.setModeStandby();
@@ -45,56 +49,7 @@ z = digitalAccelerometer.new_intp();
 //const outputStr;
 var prev = [];
 var current = [];
-const diff = 2;
-
-//const myInterval = setInterval(function()
-//{
-//	myDigitalAccelerometer.getRawValues(x, y, z);
-//    var changed = false;
-//
-//    // set defaults if not exist
-//    if (typeof prev[y] === 'undefined') {
-//        prev[y] = digitalAccelerometer.intp_value(y);
-//        prev[z] = digitalAccelerometer.intp_value(z);
-//        prev[x] = digitalAccelerometer.intp_value(x);
-//    }
-//
-//    current[y] = digitalAccelerometer.intp_value(y)
-//    current[z] = digitalAccelerometer.intp_value(z)
-//    current[x] = digitalAccelerometer.intp_value(x)
-//
-//    if (Math.abs(prev[x] - current[x]) > diff) {
-//        console.log(`X has changed from ${prev[x]} to ${current[x]}`);
-//        changed = true;
-//    }
-//
-//    if (Math.abs(prev[y] - current[y]) > diff) {
-//        console.log(`Y has changed from ${prev[y]} to ${current[y]}`);
-//        changed = true;
-//    }
-//
-//    if (Math.abs(prev[z] - current[z]) > diff) {
-//        console.log(`Z has changed from ${prev[z]} to ${current[z]}`);
-//        changed = true;
-//    }
-//
-//    prev[y] = current[y];
-//    prev[z] = current[z];
-//    prev[x] = current[x];
-//
-//    if (changed) {
-//        console.log("Send request")
-//        melody();
-//    }
-//
-////	myDigitalAccelerometer.getAcceleration(ax, ay, az);
-////	outputStr = "Acceleration: x = "
-////		+ roundNum(digitalAccelerometer.floatp_value(ax), 6)
-////		+ "g y = " + roundNum(digitalAccelerometer.floatp_value(ay), 6)
-////		+ "g z = " + roundNum(digitalAccelerometer.floatp_value(az), 6) + "g";
-////	console.log(outputStr);
-//}, 250);
-
+const diff = 2.5;
 
 (function checkTilt() {
 	myDigitalAccelerometer.getRawValues(x, y, z);
@@ -102,6 +57,7 @@ const diff = 2;
 
     // set defaults if not exist
     if (typeof prev[y] === 'undefined') {
+        
         prev[y] = digitalAccelerometer.intp_value(y);
         prev[z] = digitalAccelerometer.intp_value(z);
         prev[x] = digitalAccelerometer.intp_value(x);
@@ -125,18 +81,21 @@ const diff = 2;
         console.log(`Z has changed from ${prev[z]} to ${current[z]}`);
         changed = true;
     }
-
+    
     prev[y] = current[y];
     prev[z] = current[z];
     prev[x] = current[x];
+    
 
     if (changed) {
+        console.log('tilting')
         smiley();
         melody();
         setTimeout(function() {
             frown();
+            console.log('finished tilting');
             checkTilt();
-        }, 5000);    
+        }, 20000);    
         
     } else {
         setTimeout(function() {
@@ -192,14 +151,10 @@ function melody()
     
     myBuzzer.stopSound();
 }
-//setInterval(melody, 100);
-
 
 // When exiting: clear interval and print message
 process.on('SIGINT', function()
 {
-	
-
 	// clean up memory
 	digitalAccelerometer.delete_intp(x);
 	digitalAccelerometer.delete_intp(y);

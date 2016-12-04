@@ -25,6 +25,14 @@ function setRecycleMessage() {
     myLCD.write("Recycle");
 }
 
+function sayThanks() {
+    myLCD.clear();
+    myLCD.setColor(155,48,255);
+    myLCD.write("Thank");
+    myLCD.setCursor(1,1);
+    myLCD.write("You");
+}
+
 setRecycleMessage();
 
 // place device in standby mode so we can write registers
@@ -49,7 +57,7 @@ z = digitalAccelerometer.new_intp();
 //const outputStr;
 var prev = [];
 var current = [];
-const diff = 2.5;
+const diff = 3;
 
 (function checkTilt() {
 	myDigitalAccelerometer.getRawValues(x, y, z);
@@ -91,11 +99,13 @@ const diff = 2.5;
         console.log('tilting')
         smiley();
         melody();
+        sayThanks();
         setTimeout(function() {
             frown();
+            setRecycleMessage();
             console.log('finished tilting');
             checkTilt();
-        }, 20000);    
+        }, 10000);    
         
     } else {
         setTimeout(function() {
@@ -145,12 +155,18 @@ chords.push(upmBuzzer.LA);
 
 function melody()
 {
-    for (const chord of chords) {
-        console.log( myBuzzer.playSound(chord, 400000) );
-    };
-    
+    console.log( myBuzzer.playSound(upmBuzzer.MI, 800000) );
+    console.log( myBuzzer.playSound(upmBuzzer.RE, 400000) );
+    console.log( myBuzzer.playSound(upmBuzzer.MI, 600000) );
+    console.log( myBuzzer.playSound(upmBuzzer.RE, 400000) );
+    console.log( myBuzzer.playSound(upmBuzzer.MI, 400000) );
+    console.log( myBuzzer.playSound(upmBuzzer.SOL,400000) );
+    console.log( myBuzzer.playSound(upmBuzzer.SI, 400000) );
+    console.log( myBuzzer.playSound(upmBuzzer.RE, 600000) );
+
     myBuzzer.stopSound();
 }
+
 
 // When exiting: clear interval and print message
 process.on('SIGINT', function()

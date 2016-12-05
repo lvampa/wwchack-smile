@@ -124,7 +124,7 @@ function frown() {
     })
 }
 
-myBuzzer.setVolume(0.01);
+myBuzzer.setVolume(0.8);
 
 var chords = [];
 chords.push(upmBuzzer.MI);
